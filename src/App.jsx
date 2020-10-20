@@ -8,7 +8,7 @@ import {
   Rect,
   Group,
 } from "react-konva";
-//import Konva from "konva";
+import Konva from "konva";
 
 let history = [];
 let historyStep = 0;
@@ -26,6 +26,7 @@ class App extends React.Component {
     render: false,
     imgRatio: 1,
     imgQ: 1,
+    bright: 5,
   };
   componentDidMount() {
     const _ = this;
@@ -99,6 +100,14 @@ class App extends React.Component {
     }
 
     this.stage.current.batchDraw();
+  };
+  bright = (e) => {
+    const img = this.stage.current.find("#imgRef")[0];
+    img.cache();
+    img.filters([Konva.Filters.Brighten]);
+    img.brightness(parseFloat(e.target.value) / 10);
+    console.log("bright", parseFloat(e.target.value) / 10);
+    this.stage.current.find("#layer1").batchDraw();
   };
   render() {
     const { toTransform } = this.state;
@@ -232,6 +241,11 @@ class App extends React.Component {
             Export Quality : {this.state.imgQ} , Export Ratio :{" "}
             {this.state.imgRatio}{" "}
           </button>
+
+          <div>
+            bright :
+            <input type="range" min="0" max="10" onChange={this.bright}></input>
+          </div>
         </div>
       )
     );
