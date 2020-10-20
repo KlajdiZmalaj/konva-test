@@ -59,6 +59,47 @@ class App extends React.Component {
   dragHandler = (e) => {
     console.log("onDrag", e.target);
   };
+  scaleImg = (e, btn) => {
+    const img = this.stage.current.find("#imgRef")[0];
+    var oldScale = img.scaleX();
+    var pointer = this.stage.current.getPointerPosition();
+    var scaleBy = 1.4;
+    var mousePointTo = {
+      x: (pointer.x - img.x()) / oldScale,
+      y: (pointer.y - img.y()) / oldScale,
+    };
+    if (btn) {
+      if (btn === "plus") {
+        var newScale = oldScale * scaleBy;
+        img.scale({ x: newScale, y: newScale });
+        var newPos = {
+          x: 0,
+          y: 0,
+        };
+        img.position(newPos);
+      } else {
+        var newScale = oldScale / scaleBy;
+        img.scale({ x: newScale, y: newScale });
+        var newPos = {
+          x: 0,
+          y: 0,
+        };
+        img.position(newPos);
+      }
+    } else {
+      e.evt.preventDefault();
+
+      var newScale = e.evt.deltaY < 0 ? oldScale * scaleBy : oldScale / scaleBy;
+      img.scale({ x: newScale, y: newScale });
+      var newPos = {
+        x: pointer.x - mousePointTo.x * newScale,
+        y: pointer.y - mousePointTo.y * newScale,
+      };
+      img.position(newPos);
+    }
+
+    this.stage.current.batchDraw();
+  };
   render() {
     const { toTransform } = this.state;
     const newHeight = (700 / myImage.width) * myImage.height;
@@ -72,31 +113,31 @@ class App extends React.Component {
             display: "flex",
             alignItems: "flex-start",
             justifyContent: "flex-start",
+            position: "relative",
           }}
         >
+          <div style={{ position: "absolute", left: 0, zIndex: 1 }}>
+            <button
+              onClick={(e) => {
+                this.scaleImg(e, "plus");
+              }}
+            >
+              +
+            </button>
+            <button
+              onClick={(e) => {
+                this.scaleImg(e, "minus");
+              }}
+            >
+              -
+            </button>
+          </div>
           <Stage
             ref={this.stage}
             width={700}
             height={window.innerHeight - 100}
             onWheel={(e) => {
-              e.evt.preventDefault();
-              const img = this.stage.current.find("#imgRef")[0];
-              var oldScale = img.scaleX();
-              var pointer = this.stage.current.getPointerPosition();
-              var scaleBy = 1.4;
-              var mousePointTo = {
-                x: (pointer.x - img.x()) / oldScale,
-                y: (pointer.y - img.y()) / oldScale,
-              };
-              var newScale =
-                e.evt.deltaY < 0 ? oldScale * scaleBy : oldScale / scaleBy;
-              img.scale({ x: newScale, y: newScale });
-              var newPos = {
-                x: pointer.x - mousePointTo.x * newScale,
-                y: pointer.y - mousePointTo.y * newScale,
-              };
-              img.position(newPos);
-              this.stage.current.batchDraw();
+              this.scaleImg(e);
               // console.log("img", img);
               // if (e.evt.deltaY < 0) {
               //   img.scale({
