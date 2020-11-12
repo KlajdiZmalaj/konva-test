@@ -109,11 +109,18 @@ class App extends React.Component {
     console.log("bright", parseFloat(e.target.value) / 10);
     this.stage.current.find("#layer1").batchDraw();
   };
+  brighte = (e) => {
+    const img = this.stage.current.find("#imgRef")[0];
+    img.cache();
+    img.filters([Konva.Filters.Brighten]);
+    img.brightness(parseFloat(e.target.value) / 10);
+    console.log("bright", parseFloat(e.target.value) / 10);
+    this.stage.current.find("#layer1").batchDraw();
+  };
   render() {
     const { toTransform } = this.state;
     const newHeight = (700 / myImage.width) * myImage.height;
     const newWidth = 700;
-
     return (
       this.state.render && (
         <div
