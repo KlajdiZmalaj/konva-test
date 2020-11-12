@@ -113,6 +113,9 @@ class App extends React.Component {
     const img = this.stage.current.find("#imgRef")[0];
     img.cache();
     img.filters([Konva.Filters.Brighten]);
+    const img = this.stage.current.find("#imgRef")[0];
+    img.cache();
+    img.filters([Konva.Filters.Brighten]);
     img.brightness(parseFloat(e.target.value) / 10);
     console.log("bright", parseFloat(e.target.value) / 10);
     this.stage.current.find("#layer1").batchDraw();
