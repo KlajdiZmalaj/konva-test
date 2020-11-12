@@ -111,7 +111,6 @@ class App extends React.Component {
   };
   brighte = (e) => {
     const img = this.stage.current.find("#imgRef")[0];
-    const img = this.stage.current.find("#imgRef")[0];
   };
   render() {
     const { toTransform } = this.state;
