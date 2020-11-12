@@ -114,9 +114,6 @@ class App extends React.Component {
     img.cache();
     img.filters([Konva.Filters.Brighten]);
     const img = this.stage.current.find("#imgRef")[0];
-    img.cache();
-    img.filters([Konva.Filters.Brighten]);
-    img.brightness(parseFloat(e.target.value) / 10);
   };
   render() {
     const { toTransform } = this.state;
