@@ -112,7 +112,6 @@ class App extends React.Component {
   brighte = (e) => {
     const img = this.stage.current.find("#imgRef")[0];
     img.cache();
-    img.filters([Konva.Filters.Brighten]);
     const img = this.stage.current.find("#imgRef")[0];
   };
   render() {
